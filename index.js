@@ -120,7 +120,7 @@ async function settrade_info_eod(symbols) {
 app.get('/download', async (req, res) => {
     console.log('Start to download')
     var current_listed_securities = await get_current_listed_securities();
-    console.log(current_listed_securities)
+    console.log('list: ', current_listed_securities)
 
     // var current_listed_securities = ['AEONTS'];
     // await settrade_info_eod(current_listed_securities, res);
