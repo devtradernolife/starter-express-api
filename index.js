@@ -51,7 +51,7 @@ async function get_security_info_from_settrade(symbol, language='en') {
     };
 
     const response = await requests_get(url, referer_url, headers, params);
-    return response, response.status;
+    return response;
 }
 
 async function get_current_listed_securities_from_settrade(security_type='S') {
@@ -78,11 +78,11 @@ async function get_current_listed_securities_from_settrade(security_type='S') {
 async function get_current_listed_securities() {
     let output = [];
     const response = await get_current_listed_securities_from_settrade('S');
-    const status = response.status;
+    //const status = response.status;
 
     console.log(response)
-    console.log('error: ', response.data)
-    console.log('status: ',status)
+    // console.log('error: ', response.data)
+    // console.log('status: ',status)
 
     if (status === 200) {
         const json_data = response.data;
