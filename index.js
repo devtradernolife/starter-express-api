@@ -119,7 +119,10 @@ async function settrade_info_eod(symbols) {
 
 app.get('/', async (req, res) => {
     res.write(`event: message\nid: ${Date.now()}\ndata: Welcome! Starting to download data...\n\n`); // welcome message
-    let current_listed_securities = await get_current_listed_securities();
+    var current_listed_securities = await get_current_listed_securities();
+    console.log(current_listed_securities)
+
+    var current_listed_securities = ['AEONTS'];
     await settrade_info_eod(current_listed_securities, res);
     res.write(`event: message\nid: ${Date.now()}\ndata: All data has been processed.\n\n`); // final message
 });
