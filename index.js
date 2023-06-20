@@ -128,9 +128,9 @@ app.get('/download', async (req, res) => {
     var current_listed_securities = await get_current_listed_securities();
     console.log('list: ', current_listed_securities)
 
-    // var current_listed_securities = ['AEONTS'];
-    // await settrade_info_eod(current_listed_securities, res);
-    // console.log('Done')
+    var current_listed_securities = ['AEONTS'];
+    await settrade_info_eod(current_listed_securities, res);
+    console.log('Done after info ticker')
 });
 
 app.listen(process.env.PORT || 3000, () => {
