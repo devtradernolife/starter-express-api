@@ -5,6 +5,33 @@ const uuid = require('uuid');
 const app = express();
 const MAX_THREADS = 30;
 
+const fetch = require('node-fetch');
+
+async function uploadFileToGitLab(projectId, directory, fileName, content, commitMessage, gitlabToken) {
+    const filePath = `${directory}/${fileName}`;
+    const url = `https://gitlab.com/api/v4/projects/${encodeURIComponent(projectId)}/repository/files/${encodeURIComponent(filePath)}`;
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'PRIVATE-TOKEN': gitlabToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            branch: 'master',
+            content: Buffer.from(JSON.stringify(content)).toString('base64'), // encode your content to base64
+            commit_message: commitMessage,
+        })
+    });
+
+    if (response.ok) {
+        console.log(`File ${fileName} successfully uploaded to GitLab.`);
+    } else {
+        console.log(`Failed to upload file ${fileName} to GitLab. ${response.statusText}`);
+    }
+}
+
+
 
 async function requests_get(url, referer_url=null, headers=null, params=null, max_retries=5) {
     headers = headers || {
@@ -84,10 +111,10 @@ async function get_current_listed_securities() {
     // console.log('error: ', response.data)
     console.log('status: ',status)
 
-    // if (status === 200) {
-    //     const json_data = response.data;
-    //     output = json_data.securitySymbols.map(symbol => symbol.symbol);
-    // }
+    if (status === 200) {
+        const json_data = response;
+        output = json_data.securitySymbols.map(symbol => symbol.symbol);
+    }
 
     return output;
 }
@@ -130,6 +157,17 @@ app.get('/download', async (req, res) => {
 
     var current_listed_securities = ['AEONTS'];
     await settrade_info_eod(current_listed_securities, res);
+
+    const projectId = '47023085'; // replace with your project ID
+    const directory = 'settrade_eod_data'; // directory inside the GitLab project
+    const fileName = `${symbol}.json`; // replace `symbol` with the symbol of the data you're uploading
+    const content = jsonData; // replace `jsonData` with the actual JSON data you want to upload
+    const commitMessage = `Add ${symbol} data`;
+    const gitlabToken = 'glpat-QifxpbGDzh1F8--AHgN6'; // replace with your actual GitLab token
+
+    uploadFileToGitLab(projectId, directory, fileName, content, commitMessage, gitlabToken);
+
+
     console.log('Done after info ticker')
 });
 
