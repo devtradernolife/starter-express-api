@@ -157,7 +157,7 @@ app.get('/download', async (req, res) => {
     
     const projectId = '47023085'; /// replace with your project ID
     const directory = 'settrade_eod_data'; // directory inside the GitLab project
-    const fileName = `${symbol}.json`; // replace `symbol` with the symbol of the data you're uploading
+    const fileName = `${res["symbol"]}.json`; // replace `symbol` with the symbol of the data you're uploading
     const content = jsonData; // replace `jsonData` with the actual JSON data you want to upload
     const commitMessage = `Add ${symbol} data`;
     const gitlabToken = 'glpat-QifxpbGDzh1F8--AHgN6'; // replace with your actual GitLab token
