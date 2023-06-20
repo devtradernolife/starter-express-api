@@ -117,14 +117,14 @@ async function settrade_info_eod(symbols) {
     }
 }
 
-app.get('/', async (req, res) => {
+app.get('/download', async (req, res) => {
     console.log('Start to download')
     var current_listed_securities = await get_current_listed_securities();
     console.log(current_listed_securities)
 
-    var current_listed_securities = ['AEONTS'];
-    await settrade_info_eod(current_listed_securities, res);
-    console.log('Done')
+    // var current_listed_securities = ['AEONTS'];
+    // await settrade_info_eod(current_listed_securities, res);
+    // console.log('Done')
 });
 
 app.listen(process.env.PORT || 3000, () => {
