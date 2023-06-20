@@ -7,30 +7,25 @@ const MAX_THREADS = 30;
 
 const fetch = require('node-fetch');
 
-async function uploadFileToGitLab(projectId, directory, fileName, content, commitMessage, gitlabToken) {
-    const filePath = `${directory}/${fileName}`;
-    const url = `https://gitlab.com/api/v4/projects/${encodeURIComponent(projectId)}/repository/files/${encodeURIComponent(filePath)}`;
+async function uploadFileToGitlab(symbol, jsonData) {
+    const gitlabUrl = `https://gitlab.example.com/api/v4/projects/${projectId}/repository/files/${symbol}%2Fdata.json`;
 
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'PRIVATE-TOKEN': gitlabToken,
-            'Content-Type': 'application/json'
+    const fileContent = Buffer.from(JSON.stringify(jsonData)).toString('base64');
+
+    const response = await axios.post(
+        gitlabUrl,
+        {
+            branch: 'main',
+            author_email: 'author@example.com',
+            author_name: 'Author Name',
+            content: fileContent,
+            commit_message: 'Automated commit'
         },
-        body: JSON.stringify({
-            branch: 'master',
-            content: Buffer.from(JSON.stringify(content)).toString('base64'), // encode your content to base64
-            commit_message: commitMessage,
-        })
-    });
+        { headers: { 'PRIVATE-TOKEN': 'glpat-QifxpbGDzh1F8--AHgN6' } }
+    );
 
-    if (response.ok) {
-        console.log(`File ${fileName} successfully uploaded to GitLab.`);
-    } else {
-        console.log(`Failed to upload file ${fileName} to GitLab. ${response.statusText}`);
-    }
+    return response;
 }
-
 
 
 async function requests_get(url, referer_url=null, headers=null, params=null, max_retries=5) {
@@ -165,7 +160,7 @@ app.get('/download', async (req, res) => {
     const commitMessage = `Add ${symbol} data`;
     const gitlabToken = 'glpat-QifxpbGDzh1F8--AHgN6'; // replace with your actual GitLab token
 
-    uploadFileToGitLab(projectId, directory, fileName, content, commitMessage, gitlabToken);
+    uploadFileToGitlab(projectId, directory, fileName, content, commitMessage, gitlabToken);
 
 
     console.log('Done after info ticker')
