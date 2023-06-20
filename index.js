@@ -80,6 +80,7 @@ async function get_current_listed_securities() {
     const response = await get_current_listed_securities_from_settrade('S');
     const status = response.status;
 
+    console.log(response)
     console.log('error: ', response.data)
     console.log('status: ',status)
 
