@@ -5,6 +5,7 @@ const uuid = require('uuid');
 const app = express();
 const MAX_THREADS = 30;
 
+
 async function requests_get(url, referer_url=null, headers=null, params=null, max_retries=5) {
     headers = headers || {
         'Accept': 'application/json, text/plain, */*',
@@ -108,19 +109,21 @@ async function settrade_info_eod(symbols) {
 
     for (let symbol of symbols) {
         symbol = symbol.toUpperCase();
+        res.write(`event: message\nid: ${Date.now()}\ndata: Downloading data for ${symbol}\n\n`); // notify client
         let res_data = await get_security_info_from_settrade(symbol);
         res_data = res_data.data;
+        res.write(`event: message\nid: ${Date.now()}\ndata: Finished downloading data for ${symbol}\n\n`); // notify client
         console.log(res_data);
     }
 }
 
 app.get('/', async (req, res) => {
+    res.write(`event: message\nid: ${Date.now()}\ndata: Welcome! Starting to download data...\n\n`); // welcome message
     let current_listed_securities = await get_current_listed_securities();
-    await settrade_info_eod(current_listed_securities);
-    res.send('Data processed.');
+    await settrade_info_eod(current_listed_securities, res);
+    res.write(`event: message\nid: ${Date.now()}\ndata: All data has been processed.\n\n`); // final message
 });
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Server is up and running on port ${process.env.PORT || 3000}.`);
 });
-
