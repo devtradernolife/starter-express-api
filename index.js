@@ -68,8 +68,10 @@ async function get_current_listed_securities_from_settrade(security_type='S') {
         'X-Channel': 'WEB_SETTRADE',
         'X-Client-Uuid': uuid.v4()
     };
+    console.log('before');
 
     const response = await requests_get(url, referer_url, headers, params);
+    console.log('after');
     return response, response.status;
 }
 
