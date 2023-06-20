@@ -84,10 +84,10 @@ async function get_current_listed_securities() {
     // console.log('error: ', response.data)
     // console.log('status: ',status)
 
-    if (status === 200) {
-        const json_data = response.data;
-        output = json_data.securitySymbols.map(symbol => symbol.symbol);
-    }
+    // if (status === 200) {
+    //     const json_data = response.data;
+    //     output = json_data.securitySymbols.map(symbol => symbol.symbol);
+    // }
 
     return output;
 }
