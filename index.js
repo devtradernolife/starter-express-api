@@ -109,22 +109,22 @@ async function settrade_info_eod(symbols) {
 
     for (let symbol of symbols) {
         symbol = symbol.toUpperCase();
-        res.write(`event: message\nid: ${Date.now()}\ndata: Downloading data for ${symbol}\n\n`); // notify client
+        console.log('Start to download')
         let res_data = await get_security_info_from_settrade(symbol);
         res_data = res_data.data;
-        res.write(`event: message\nid: ${Date.now()}\ndata: Finished downloading data for ${symbol}\n\n`); // notify client
+        console.log('Done')
         console.log(res_data);
     }
 }
 
 app.get('/', async (req, res) => {
-    res.write(`event: message\nid: ${Date.now()}\ndata: Welcome! Starting to download data...\n\n`); // welcome message
+    console.log('Start to download')
     var current_listed_securities = await get_current_listed_securities();
     console.log(current_listed_securities)
 
     var current_listed_securities = ['AEONTS'];
     await settrade_info_eod(current_listed_securities, res);
-    res.write(`event: message\nid: ${Date.now()}\ndata: All data has been processed.\n\n`); // final message
+    console.log('Done')
 });
 
 app.listen(process.env.PORT || 3000, () => {
