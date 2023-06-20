@@ -108,7 +108,7 @@ async function get_current_listed_securities() {
 
     if (status === 200) {
         const json_data = response;
-        output = json_data.securitySymbols.map(symbol => symbol.symbol);
+        output = json_data.data.securitySymbols.map(symbol => symbol.symbol);
     }
 
     return output;
