@@ -152,6 +152,8 @@ app.get('/download', async (req, res) => {
 
     var current_listed_securities = ['AEONTS', 'CPF'];
     await settrade_info_eod(current_listed_securities, res);
+
+    console.log(res)
     
     const projectId = '47023085'; /// replace with your project ID
     const directory = 'settrade_eod_data'; // directory inside the GitLab project
