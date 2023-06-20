@@ -155,7 +155,7 @@ app.get('/download', async (req, res) => {
     var current_listed_securities = await get_current_listed_securities();
     console.log('list: ', current_listed_securities)
 
-    var current_listed_securities = ['AEONTS'];
+    var current_listed_securities = ['AEONTS', 'CPF'];
     await settrade_info_eod(current_listed_securities, res);
     
     const projectId = '47023085'; /// replace with your project ID
