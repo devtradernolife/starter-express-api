@@ -72,7 +72,7 @@ async function get_current_listed_securities_from_settrade(security_type='S') {
 
     const response = await requests_get(url, referer_url, headers, params);
     console.log('after');
-    return response, response.status;
+    return response;
 }
 
 async function get_current_listed_securities() {
